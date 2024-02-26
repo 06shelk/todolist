@@ -1,6 +1,7 @@
-import React from 'react'
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import styled, { css } from 'styled-components'
 import { IoMoon } from "react-icons/io5";
+import { useTodoDispatch, useTodoNextId } from '../TodoContext';
 
 const StyledHeader = styled.header`
     display: flex;
@@ -20,6 +21,7 @@ const StyledHeader = styled.header`
         background-color: white;
         border-radius: 1px;
         border: 1px solid #333;
+        color: #666;
     }
 `;
 
@@ -33,14 +35,50 @@ const Input = styled.input`
     box-sizing: border-box;
 `;
 
-function TodoHead() {
-    return (
 
+const InsertForm = styled.form`
+    width: 70%;
+`;
+
+function TodoHead() {
+    const [value, setValue] = useState('');
+
+    const dispatch = useTodoDispatch();
+    const nextId = useTodoNextId();
+
+    const onChange = e => setValue(e.target.value);
+    
+    const onSubmit = e => {
+        e.preventDefault(); // 새로고침 방지
+        if (value.trim() === '') {
+            return;
+        }
+        dispatch({
+          type: 'CREATE',
+          todo: {
+            id: nextId.current,
+            text: value,
+            done: false
+          }
+        });
+        setValue('');
+        nextId.current += 1;
+      };
+
+    return (
         <StyledHeader>
             <h1>TODO LIST</h1>
             <div className='StyledAlign'>
-                <Input autoFocus placeholder="Create a new todo" />
-                <button><IoMoon /></button>
+                <InsertForm onSubmit={onSubmit}>
+                    <Input 
+                        autoFocus 
+                        placeholder="Create a new todo" 
+                        value={value}
+                        onChange={onChange}
+                        onSubmit={onSubmit} 
+                    />
+                </InsertForm>
+                <button onClick={onSubmit} >add</button>
             </div>
         </StyledHeader>
         
