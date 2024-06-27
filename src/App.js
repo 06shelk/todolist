@@ -7,12 +7,14 @@ import { TodoProvider } from './TodoContext';
 
 const App = () => {
   return (
-    <TodoProvider>
-      <TodoTemplate>
-        <TodoHead></TodoHead>
-        <TodoList></TodoList>
-      </TodoTemplate>
-    </TodoProvider>
+
+      <TodoProvider>
+        <TodoTemplate>
+          <TodoHead></TodoHead>
+          <TodoList></TodoList>
+        </TodoTemplate>
+      </TodoProvider>
+  
   )
 }
 
